@@ -1,6 +1,9 @@
 let SizeRadio;
 
-const CellSize = 25;
+const CellSize   = 25;
+const XSizes    = [8,  9, 16, 30];
+const YSizes    = [8,  9, 16, 16];
+const Objects   = [9, 10, 40, 99];
 
 let cells = [];
 let Mode = -1;
@@ -46,7 +49,7 @@ function InitialiseObjects(IndexX, IndexY)
    IndexOptions.push(Index1D);
   }
   IndexOptions.splice(IndexX * cols + IndexY, 1);
-  const NrObjects = 5; // TODO should be something smart
+  const NrObjects = Objects[Mode]; // TODO should be something smart
   for (let iObject = 0; iObject < NrObjects; ++iObject)
     {
       const ObjectIndex1D = round(random(IndexOptions.length));
@@ -81,16 +84,13 @@ function setup()
   SizeRadio.position(0, 475);
   SizeRadio.size(500);
 
-  // Add a few color options.
-  // Color values are labeled with
-  // emotions they evoke.
-  SizeRadio.option(8  , 'Classic 8x8');
-  SizeRadio.option(9  , 'Easy 9x9');
-  SizeRadio.option(16, 'Medium 16x16');
-  SizeRadio.option(30, 'Expert 30x16');
+  SizeRadio.option(0  , 'Classic 8x8');
+  SizeRadio.option(1  , 'Easy 9x9');
+  SizeRadio.option(2, 'Medium 16x16');
+  SizeRadio.option(3, 'Expert 30x16');
 
   // Choose a default option.
-  SizeRadio.selected('9');
+  SizeRadio.selected('1');
 }
 
 function mousePressed()
@@ -141,8 +141,7 @@ function draw()
   if (Mode != SizeRadio.value())
     {
       Mode = SizeRadio.value();
-      const ModeY = Mode == 30 ? 16 : Mode;
-      ResetField(Mode,ModeY);
+      ResetField(XSizes[Mode],YSizes[Mode]);
     }
   for (i = 0; i < cols; ++i)
     {
